@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Tron Calendar Interface</title>
+
+<style>
+:root {
+  --neon: #00f6ff;
+  --bg: #05080f;
+  --panel: #0b1c26;
+  --text: #cfffff;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow-y: auto;
+}
+
+/* ---------- LOADING ---------- */
+#loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #0a2a33, #020409);
+  z-index: 100;
+}
+
+.loader {
+  width: 120px;
+  height: 120px;
+  border: 3px solid var(--neon);
+  box-shadow: 0 0 30px var(--neon);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ---------- APP ---------- */
+#app {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: 1s;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+#app.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---------- GUIDE ---------- */
+.guide {
+  display: flex;
+  gap: 16px;
+  background: var(--panel);
+  border: 1px solid var(--neon);
+  padding: 16px;
+  box-shadow: 0 0 15px rgba(0,246,255,.4);
+  margin-bottom: 24px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--neon);
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+  color: var(--neon);
+}
+
+.guide input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--neon);
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+
+.logout {
+  margin-top: 8px;
+  background: transparent;
+  color: var(--neon);
+  border: 1px solid var(--neon);
+  cursor: pointer;
+}
+
+/* ---------- CALENDAR ---------- */
+.calendar-title {
+  font-size: 22px;
+  text-shadow: 0 0 10px var(--neon);
+  margin-bottom: 12px;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  height: 90px;
+  border: 1px solid rgba(0,246,255,.3);
+  padding: 6px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.day.note {
+  box-shadow: 0 0 10px var(--neon);
+}
+
+.day:hover {
+  box-shadow: 0 0 15px var(--neon);
+}
+
+/* ---------- MODAL ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  background: rgba(0,0,0,.6);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--panel);
+  border: 1px solid var(--neon);
+  padding: 16px;
+  width: 300px;
+  box-shadow: 0 0 20px var(--neon);
+}
+
+.modal textarea {
+  width: 100%;
+  height: 100px;
+  background: #000;
+  color: var(--text);
+  border: 1px solid var(--neon);
+}
+
+.modal button {
+  margin-top: 8px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--neon);
+  color: var(--neon);
+}
+
+/* ---------- SOCIAL ---------- */
+.social-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+.social-btn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--neon);
+  color: var(--neon);
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading"><div class="loader"></div></div>
+
+<div id="app">
+
+  <div class="guide">
+    <div class="avatar">AI</div>
+    <div>
+      <div id="guideText"></div>
+      <input id="nameInput" placeholder="Enter your name" />
+      <button class="logout" id="logoutBtn" style="display:none;">Logout</button>
+    </div>
+  </div>
+
+  <div class="calendar-title" id="calendarTitle"></div>
+  <div class="calendar" id="calendar"></div>
+</div>
+
+<div class="modal" id="noteModal">
+  <div class="modal-content">
+    <div id="noteDate"></div>
+    <textarea id="noteText"></textarea>
+    <button id="saveNote">Save Note</button>
+  </div>
+</div>
+
+<div class="social-panel">
+  <a class="social-btn" href="https://pin.it/35Jw3wS3a">PN</a>
+  <a class="social-btn" href="https://instagram.com">IG</a>
+  <a class="social-btn" href="https://github.com/xenbohem">GH</a>
+</div>
+
+<script>
+const loading = document.getElementById("loading");
+const app = document.getElementById("app");
+const nameInput = document.getElementById("nameInput");
+const guideText = document.getElementById("guideText");
+const title = document.getElementById("calendarTitle");
+const calendar = document.getElementById("calendar");
+const logoutBtn = document.getElementById("logoutBtn");
+
+const modal = document.getElementById("noteModal");
+const noteText = document.getElementById("noteText");
+const noteDate = document.getElementById("noteDate");
+
+let activeDate = "";
+
+setTimeout(() => {
+  loading.style.display = "none";
+  app.classList.add("active");
+}, 1500);
+
+function initUser() {
+  const user = localStorage.getItem("user");
+  if (user) {
+    guideText.textContent = `Welcome back, ${user}`;
+    title.textContent = `${new Date().toLocaleString("default",{month:"long"})} ${new Date().getFullYear()}`;
+    nameInput.style.display = "none";
+    logoutBtn.style.display = "block";
+    buildCalendar();
+  } else {
+    guideText.textContent = "Hello user. What is your name?";
+  }
+}
+
+nameInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    localStorage.setItem("user", nameInput.value);
+    initUser();
+  }
+});
+
+logoutBtn.onclick = () => {
+  localStorage.clear();
+  location.reload();
+};
+
+function buildCalendar() {
+  calendar.innerHTML = "";
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    calendar.appendChild(document.createElement("div"));
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement("div");
+    const dateKey = `${year}-${month}-${d}`;
+    cell.className = "day";
+    cell.textContent = d;
+
+    if (localStorage.getItem(dateKey)) cell.classList.add("note");
+
+    cell.onclick = () => {
+      activeDate = dateKey;
+      noteDate.textContent = dateKey;
+      noteText.value = localStorage.getItem(dateKey) || "";
+      modal.style.display = "flex";
+    };
+
+    calendar.appendChild(cell);
+  }
+}
+
+document.getElementById("saveNote").onclick = () => {
+  localStorage.setItem(activeDate, noteText.value);
+  modal.style.display = "none";
+  buildCalendar();
+};
+
+modal.onclick = e => {
+  if (e.target === modal) modal.style.display = "none";
+};
+
+initUser();
+</script>
+
+</body>
+</html>
