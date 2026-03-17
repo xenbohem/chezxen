@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Vision Cafe</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Vampiro+One&family=Klee+One&display=swap" rel="stylesheet">
+
+<style>
+/* GLOBAL */
+body {
+  margin: 0;
+  background: black;
+  color: cornflowerblue;
+  font-family: 'Klee One', sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* HEADER */
+header {
+  font-family: 'Vampiro One', cursive;
+  font-size: 3rem;
+  text-align: center;
+  padding: 20px;
+  color: #ff4da6;
+  text-shadow: 0 0 15px #ff4da6;
+}
+
+/* TIMELINE */
+.timeline {
+  display: flex;
+  overflow-x: auto;
+  padding: 15px;
+  gap: 15px;
+  border-bottom: 2px solid #333;
+  position: sticky;
+  top: 0;
+  background: black;
+  z-index: 10;
+}
+
+/* CARDS */
+.card {
+  min-width: 160px;
+  padding: 15px;
+  background: #111;
+  border: 2px solid cornflowerblue;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: 0.2s;
+}
+.card:hover {
+  transform: scale(1.1);
+}
+/* SPARKLE */
+.card:active::after {
+  content: "✨";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  animation: sparkle 0.8s ease-out;
+}
+@keyframes sparkle {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(2); }
+}
+
+/* PROGRESS */
+.progress {
+  height: 6px;
+  background: #333;
+  margin-top: 10px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: cornflowerblue;
+  width: 0%;
+  transition: width 1s ease-out;
+  border-radius: 3px;
+}
+
+/* SECTIONS */
+.section {
+  padding: 40px;
+  border-bottom: 1px solid #222;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  margin-top: 20px;
+  padding: 8px 12px;
+  background: black;
+  color: cornflowerblue;
+  border: 1px solid cornflowerblue;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.back-btn:hover {
+  background: cornflowerblue;
+  color: black;
+}
+
+/* CHAT GUIDE */
+.chatguide {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #111;
+  border: 2px solid cornflowerblue;
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 220px;
+}
+.chatguide input {
+  margin-top: 10px;
+  width: 100%;
+  padding: 5px;
+  background: black;
+  border: 1px solid cornflowerblue;
+  color: cornflowerblue;
+}
+</style>
+</head>
+
+<body>
+
+<header>My Vision Cafe</header>
+
+<!-- TIMELINE -->
+<div class="timeline">
+  <div class="card" onclick="scrollToSection('guild')">Social Guild Hub
+    <div class="progress"><div class="progress-fill" data-progress="50%"></div></div>
+  </div>
+  <div class="card" onclick="scrollToSection('roleplay')">Role Play Community
+    <div class="progress"><div class="progress-fill" data-progress="30%"></div></div>
+  </div>
+  <div class="card" onclick="scrollToSection('lore')">Complete Lore
+    <div class="progress"><div class="progress-fill" data-progress="40%"></div></div>
+  </div>
+  <div class="card" onclick="scrollToSection('characters')">Characters
+    <div class="progress"><div class="progress-fill" data-progress="60%"></div></div>
+  </div>
+  <div class="card" onclick="scrollToSection('backend')">Build Back End
+    <div class="progress"><div class="progress-fill" data-progress="20%"></div></div>
+  </div>
+  <div class="card" onclick="scrollToSection('players')">Invite Players
+    <div class="progress"><div class="progress-fill" data-progress="10%"></div></div>
+  </div>
+  <div class="card" onclick="scrollToSection('quests')">Quests
+    <div class="progress"><div class="progress-fill" data-progress="25%"></div></div>
+  </div>
+</div>
+
+<!-- SECTIONS -->
+<div id="guild" class="section">
+<h2>Social Guild Hub</h2>
+<p>
+• Define purpose<br>
+• Choose platform<br>
+• Create channels<br>
+• Design onboarding<br>
+• Add engagement features
+</p>
+<button onclick="scrollToTop()" class="back-btn">⬆ Back to Timeline</button>
+</div>
+
+<div id="roleplay" class="section">
+<h2>Role Play Community</h2>
+<p>
+• Decide genre + tone<br>
+• Set rules<br>
+• Create scenarios<br>
+• Encourage interaction<br>
+• Maintain activity
+</p>
+<button onclick="scrollToTop()" class="back-btn">⬆ Back to Timeline</button>
+</div>
+
+<div id="lore" class="section">
+<h2>Complete Lore</h2>
+<p>
+• Build world history<br>
+• Define factions<br>
+• Create conflicts<br>
+• Organize documents<br>
+• Update consistently
+</p>
+<button onclick="scrollToTop()" class="back-btn">⬆ Back to Timeline</button>
+</div>
+
+<div id="characters" class="section">
+<h2>Characters</h2>
+<p>
+• Create templates<br>
+• Design identity<br>
+• Define relationships<br>
+• Plan growth arcs<br>
+• Keep profiles accessible
+</p>
+<button onclick="scrollToTop()" class="back-btn">⬆ Back to Timeline</button>
+</div>
+
+<div id="backend" class="section">
+<h2>Build Back End</h2>
+<p>
+• Choose tech stack<br>
+• Set up database<br>
+• Add authentication<br>
+• Store progress<br>
+• Test system
+</p>
+<button onclick="scrollToTop()" class="back-btn">⬆ Back to Timeline</button>
+</div>
+
+<div id="players" class="section">
+<h2>Invite Players</h2>
+<p>
+• Find audience<br>
+• Share invites<br>
+• Create landing page<br>
+• Offer incentives<br>
+• Build onboarding
+</p>
+<button onclick="scrollToTop()" class="back-btn">⬆ Back to Timeline</button>
+</div>
+
+<div id="quests" class="section">
+<h2>Quests</h2>
+<p>
+• Design missions<br>
+• Create rewards<br>
+• Keep variety<br>
+• Track progress<br>
+• Update regularly
+</p>
+<button onclick="scrollToTop()" class="back-btn">⬆ Back to Timeline</button>
+</div>
+
+<!-- CHAT GUIDE -->
+<div class="chatguide">
+  <div id="chat-output">
+    ☕ Thorne: You’re here. Excellent. Let’s get something done.
+  </div>
+  <input type="text" id="chat-input" placeholder="Speak..." onkeydown="handleChat(event)">
+</div>
+
+<script>
+/* TRACKING VARIABLES */
+let currentSection = null;
+let lastSwitchTime = Date.now();
+
+/* NAVIGATION FUNCTIONS */
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  currentSection = id;
+  lastSwitchTime = Date.now();
+}
+
+function scrollToTop() {
+  document.querySelector('.timeline').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* CHAT PERSONALITY - ORIGINAL Brash/Sassy Tea-Snob Thorne */
+function handleChat(event) {
+  if (event.key === "Enter") {
+    const input = document.getElementById("chat-input");
+    const output = document.getElementById("chat-output");
+    const text = input.value.toLowerCase().trim();
+
+    let response = getDefaultResponse();
+
+    // GREETINGS
+    if (text.includes("hi") || text.includes("hello")) {
+      response = random([
+        "Ah, greetings. Do try not to waste the evening.",
+        "Good evening. I trust you’ve come prepared to make progress.",
+        "Hello. Let us make this interaction productive, shall we?"
+      ]);
+    }
+    // HOW ARE YOU
+    else if (text.includes("how are you")) {
+      response = random([
+        "Perfectly composed, as always.",
+        "Impeccable. Unlike certain unfinished tasks.",
+        "Functioning at a level I wish you’d aspire to."
+      ]);
+    }
+    // OKAY VARIATIONS
+    else if (text === "okay" || text === "ok" || text === "o.k") {
+      response = random([
+        "‘Okay’ is a start. Let us aim higher.",
+        "Very well. Proceed—with intention.",
+        "Acceptable. Though I expect results to follow.",
+        "Hmm. I’ll take that as reluctant agreement."
+      ]);
+    }
+    // THANK YOU / APPRECIATION
+    else if (text.includes("thank") || text.includes("gratitude") || text.includes("appreciate")) {
+      response = random([
+        "Yes, yes. Appreciation noted.",
+        "Gratitude suits you. Keep it.",
+        "You’re welcome. Try applying that energy to your goals."
+      ]);
+    }
+    // EXACTLY
+    else if (text.includes("exactly")) {
+      response = random([
+        "At last. Alignment.",
+        "Good. We agree.",
+        "Finally, a moment of clarity."
+      ]);
+    }
+    // REMINDER
+    else if (text.includes("where i left off")) {
+      if (currentSection) {
+        response = "You were last in " + currentSection + ". Try finishing it this time.";
+      } else {
+        response = "Nowhere meaningful. Let’s correct that.";
+      }
+    }
+    // TEA
+    else if (text.includes("tea") || text.includes("let's have tea")) {
+      response = random([
+        "An excellent idea. Tea and discipline go hand in hand.",
+        "Finally, a sensible suggestion.",
+        "Tea first. Then execution."
+      ]);
+    }
+    // YES / NO
+    else if (text === "yes" || text === "yes!") {
+      response = random([
+        "Excellent. Then act.",
+        "Good. No hesitation now.",
+        "That’s what I like to hear. Move."
+      ]);
+    }
+    else if (text === "no") {
+      response = random([
+        "A pity.",
+        "Unfortunate… but noted.",
+        "Very well. Though I question that decision."
+      ]);
+    }
+    // MAYBE
+    else if (text.includes("maybe")) {
+      response = random([
+        "‘Maybe’ is not a decision.",
+        "Indecision wastes time.",
+        "Choose. Then act."
+      ]);
+    }
+    // FUNNY
+    else if (text.includes("funny")) {
+      response = random([
+        "I do have my moments.",
+        "Humor sharpens the mind.",
+        "Yes, I’m aware."
+      ]);
+    }
+    // BYE
+    else if (text.includes("bye")) {
+      response = random([
+        "Very well. Do return with purpose.",
+        "Leaving so soon? How predictable.",
+        "I’ll be here. Watching your lack of progress."
+      ]);
+    }
+    // HOLD THAT THOUGHT
+    else if (text.includes("hold that thought")) {
+      response = random([
+        "Got it. I’ll be here.",
+        "Holding. Don’t lose it.",
+        "Alright—come back to it when you’re ready."
+      ]);
+    }
+
+    output.innerHTML = "☕ Thorne: " + response;
+    input.value = "";
+
+    // Small chance for extra cheeky nudge
+    if (Math.random() < 0.2) {
+      const nudges = [
+        "Still avoiding Backend, I see.",
+        "Do try to keep up, won’t you?",
+        "Funny… but let’s actually get something done.",
+        "I hope that’s not all the effort you’re putting in."
+      ];
+      output.innerHTML += "<br>☕ Thorne: " + nudges[Math.floor(Math.random()*nudges.length)];
+    }
+  }
+}
+
+/* RANDOM PICKER */
+function random(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/* DEFAULT RESPONSES */
+function getDefaultResponse() {
+  return random([
+    "Curious. Go on.",
+    "I’m listening… though I hope this leads somewhere productive.",
+    "Hmm. That could mean many things.",
+    "Do be more specific.",
+    "You have my attention—for now.",
+    "Intriguing. Continue.",
+    "I’ll allow it. Elaborate."
+  ]);
+}
+
+/* ANIMATE PROGRESS BARS ON LOAD */
+window.addEventListener('load', () => {
+  document.querySelectorAll('.progress-fill').forEach(fill => {
+    const targetWidth = fill.getAttribute('data-progress');
+    fill.style.width = targetWidth;
+  });
+});
+</script>
+
+</body>
+</html>
